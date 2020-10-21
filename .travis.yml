@@ -1,4 +1,6 @@
 sudo: required
+language: generic
+
 services:
   - docker
 
@@ -13,9 +15,9 @@ after_success:
   - docker build -t matthv/multi-nginx ./nginx
   - docker build -t matthv/multi-server ./server
   - docker build -t matthv/multi-worker ./worker
-  # take those images and push them to docker hub
   # first log to docker CLI
   - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
+  # take those images and push them to docker hub
   - docker push matthv/multi-client
   - docker push matthv/multi-nginx
   - docker push matthv/multi-server
@@ -23,11 +25,11 @@ after_success:
 
 deploy:
   provider: eslaticbeanstalk
-  region: eu-west-3
-  app: multi-docker
-  env: MultiDocker-env
-  bucket_name: elasticbeanstalk-eu-west-3-392816299188
-  bucket_path: docker-multi
+  region: 'eu-west-3'
+  app: 'multi-docker'
+  env: 'MultiDocker-env'
+  bucket_name: 'elasticbeanstalk-eu-west-3-392816299188'
+  bucket_path: 'docker-multi'
   on:
     branch: master
   access_key_id: $AWS_ACCESS_KEY
